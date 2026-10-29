@@ -9,48 +9,88 @@ const expenseDateInput = document.getElementById('expense-date');
 const expenseList = document.getElementById('expense-list');
 const totalAmountDisplay = document.getElementById('total-amount');
 
-// Load saved expenses from localStorage (or start with an empty array if none exist)
+// Filter element
+const filterCategorySelect = document.getElementById('filter-category');
+
+// Category breakdown displays
+const catFoodDisplay = document.getElementById('cat-food');
+const catTravelDisplay = document.getElementById('cat-travel');
+const catBooksDisplay = document.getElementById('cat-books');
+const catFunDisplay = document.getElementById('cat-fun');
+const catOtherDisplay = document.getElementById('cat-other');
+
+// Load saved expenses from localStorage (or fallback to empty array)
 let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
 // =============================================================================
 // 2. HELPER FUNCTIONS
 // =============================================================================
 
-// Save the current expenses array to localStorage
+// Save to localStorage
 function saveExpensesToLocalStorage() {
   localStorage.setItem('expenses', JSON.stringify(expenses));
 }
 
 // Function to calculate and update the total spent
 function updateTotal() {
-  // Sum up all amounts in the expenses array
   const total = expenses.reduce((sum, item) => sum + item.amount, 0);
-
-  // Update the text in the HTML (formatted nicely)
   totalAmountDisplay.textContent = total.toLocaleString('en-IN');
 }
 
-// Function to render (draw) all expenses on the screen
+// Function to update spending breakdown for every category
+function updateCategoryBreakdown() {
+  const totals = {
+    Food: 0,
+    Travel: 0,
+    Books: 0,
+    Fun: 0,
+    Other: 0
+  };
+
+  // Sum up expenses per category
+  expenses.forEach((item) => {
+    if (totals.hasOwnProperty(item.category)) {
+      totals[item.category] += item.amount;
+    }
+  });
+
+  // Update text inside each chip
+  catFoodDisplay.textContent = totals.Food.toLocaleString('en-IN');
+  catTravelDisplay.textContent = totals.Travel.toLocaleString('en-IN');
+  catBooksDisplay.textContent = totals.Books.toLocaleString('en-IN');
+  catFunDisplay.textContent = totals.Fun.toLocaleString('en-IN');
+  catOtherDisplay.textContent = totals.Other.toLocaleString('en-IN');
+}
+
+// Function to render (draw) expenses with filtering applied
 function renderExpenses() {
-  // Clear out the current list so we don't duplicate items
+  // Clear the current list
   expenseList.innerHTML = '';
 
-  // Show a message if there are no expenses yet
-  if (expenses.length === 0) {
-    expenseList.innerHTML = '<li class="empty-msg">No expenses added yet!</li>';
+  const selectedCategory = filterCategorySelect.value;
+
+  // Filter expenses based on the selected dropdown value
+  const filteredExpenses = selectedCategory === 'All'
+    ? expenses
+    : expenses.filter((item) => item.category === selectedCategory);
+
+  // If no expenses match the filter
+  if (filteredExpenses.length === 0) {
+    const msg = selectedCategory === 'All' 
+      ? 'No expenses added yet!' 
+      : `No expenses found under "${selectedCategory}".`;
+
+    expenseList.innerHTML = `<li class="empty-msg">${msg}</li>`;
     return;
   }
 
-  // Loop through every expense and build its HTML
-  expenses.forEach((expense) => {
-    // Create a new <li> element
+  // Draw filtered expenses
+  filteredExpenses.forEach((expense) => {
     const li = document.createElement('li');
     li.classList.add('expense-item');
 
-    // Format the category to match CSS classes (e.g., "tag-food")
     const categoryClass = `tag-${expense.category.toLowerCase()}`;
 
-    // Fill the <li> with structure matching style.css
     li.innerHTML = `
       <div class="expense-info">
         <span class="expense-title">${expense.name}</span>
@@ -65,50 +105,50 @@ function renderExpenses() {
       </div>
     `;
 
-    // Append the newly created item into the <ul> list
     expenseList.appendChild(li);
   });
 }
 
-// Function to delete an expense by its unique ID
+// Function to delete an expense by unique ID
 function deleteExpense(id) {
-  // Keep only the expenses whose id does NOT match the clicked one
+  // Filter out the deleted item
   expenses = expenses.filter((item) => item.id !== id);
 
-  // Save the updated list to localStorage
+  // Save changes & update UI
   saveExpensesToLocalStorage();
-
-  // Re-draw the list and recalculate the total
   renderExpenses();
   updateTotal();
+  updateCategoryBreakdown();
 }
 
 // =============================================================================
-// 3. HANDLE FORM SUBMISSION (ADD EXPENSE)
+// 3. EVENT LISTENERS
 // =============================================================================
+
+// Listen for category filter changes
+filterCategorySelect.addEventListener('change', renderExpenses);
+
+// Handle form submission
 expenseForm.addEventListener('submit', function (event) {
-  // Prevent page refresh on submit
   event.preventDefault();
 
-  // Get trimmed values from the input fields
   const name = expenseNameInput.value.trim();
   const amount = parseFloat(expenseAmountInput.value);
   const category = expenseCategorySelect.value;
   const date = expenseDateInput.value;
 
-  // Validation: Check if any field is empty
+  // Form validations
   if (!name || isNaN(amount) || !category || !date) {
     alert('⚠️ Please fill out all fields before submitting.');
     return;
   }
 
-  // Validation: Check if amount is a positive number
   if (amount <= 0) {
     alert('⚠️ Amount must be greater than zero.');
     return;
   }
 
-  // Create an expense object with a unique timestamp ID
+  // Create new expense object
   const newExpense = {
     id: Date.now(),
     name: name,
@@ -117,20 +157,18 @@ expenseForm.addEventListener('submit', function (event) {
     date: date
   };
 
-  // Add the new object to the expenses array
   expenses.push(newExpense);
-
-  // Save changes to localStorage
   saveExpensesToLocalStorage();
 
-  // Update the screen and total sum
+  // Re-render UI
   renderExpenses();
   updateTotal();
+  updateCategoryBreakdown();
 
-  // Reset the form inputs for the next entry
   expenseForm.reset();
 });
 
-// Run once when the page loads to display saved expenses and calculate total
+// Run once on page load to initialize everything
 renderExpenses();
 updateTotal();
+updateCategoryBreakdown();
