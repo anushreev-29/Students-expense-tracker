@@ -2,16 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Ensures proper scaling on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Expense Tracker</title>
-
-  <!-- Link to the external CSS stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Main container to keep everything centered and organized -->
   <div class="app-container">
 
     <!-- App Header -->
@@ -20,43 +16,35 @@
       <p>Keep track of your pocket money and college expenses</p>
     </header>
 
-    <!-- Summary Section: Displays the total amount spent -->
+    <!-- Summary Section with Category Breakdown -->
     <section class="summary-card">
       <h2>Total Spent</h2>
-      <!-- The amount inside this span will be updated dynamically via JavaScript -->
       <p class="total-display">₹<span id="total-amount">0</span></p>
+
+      <!-- NEW: Category Spending Breakdown Chips -->
+      <div class="category-breakdown">
+        <span class="tag tag-food">Food: ₹<span id="cat-food">0</span></span>
+        <span class="tag tag-travel">Travel: ₹<span id="cat-travel">0</span></span>
+        <span class="tag tag-books">Books: ₹<span id="cat-books">0</span></span>
+        <span class="tag tag-fun">Fun: ₹<span id="cat-fun">0</span></span>
+        <span class="tag tag-other">Other: ₹<span id="cat-other">0</span></span>
+      </div>
     </section>
 
-    <!-- Form Section: Allows the student to input a new expense -->
+    <!-- Form Section -->
     <section class="form-card">
       <h2>Add New Expense</h2>
       <form id="expense-form">
-
-        <!-- Expense Name Input -->
         <div class="form-group">
           <label for="expense-name">Expense Name</label>
-          <input 
-            type="text" 
-            id="expense-name" 
-            placeholder="e.g., Canteen samosa, Xerox copies" 
-            required
-          >
+          <input type="text" id="expense-name" placeholder="e.g., Canteen samosa, Xerox copies" required>
         </div>
 
-        <!-- Amount Input (in Rupees) -->
         <div class="form-group">
           <label for="expense-amount">Amount (₹)</label>
-          <input 
-            type="number" 
-            id="expense-amount" 
-            placeholder="e.g., 50" 
-            min="1" 
-            step="any" 
-            required
-          >
+          <input type="number" id="expense-amount" placeholder="e.g., 50" min="1" step="any" required>
         </div>
 
-        <!-- Category Dropdown -->
         <div class="form-group">
           <label for="expense-category">Category</label>
           <select id="expense-category" required>
@@ -69,31 +57,36 @@
           </select>
         </div>
 
-        <!-- Date Input -->
         <div class="form-group">
           <label for="expense-date">Date</label>
-          <input 
-            type="date" 
-            id="expense-date" 
-            required
-          >
+          <input type="date" id="expense-date" required>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" id="add-btn">Add Expense</button>
       </form>
     </section>
 
-    <!-- Expense List Section: Where submitted expenses will be added -->
+    <!-- Expense List Section with NEW Filter Dropdown -->
     <section class="list-card">
-      <h2>Recent Expenses</h2>
-      <!-- Empty list where JavaScript will insert <li> items for each expense -->
+      <div class="list-header">
+        <h2>Recent Expenses</h2>
+
+        <!-- NEW: Filter Dropdown -->
+        <select id="filter-category" class="filter-select">
+          <option value="All">All Categories</option>
+          <option value="Food">Food</option>
+          <option value="Travel">Travel</option>
+          <option value="Books">Books</option>
+          <option value="Fun">Fun</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
       <ul id="expense-list"></ul>
     </section>
 
   </div>
 
-  <!-- Link to the external JavaScript file (loaded at the end of body) -->
   <script src="script.js"></script>
 </body>
 </html>
