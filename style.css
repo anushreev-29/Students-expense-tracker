@@ -1,0 +1,322 @@
+/* ==========================================================================
+   1. RESET & BASE VARIABLES
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+  /* Theme Colors */
+  --primary: #4f46e5;         /* Vibrant indigo */
+  --primary-hover: #4338ca;
+  --bg-page: #f1f5f9;         /* Soft light-gray background */
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --danger: #ef4444;
+
+  /* Category Tag Colors */
+  --tag-food-bg: #ffedd5;
+  --tag-food-text: #c2410c;
+
+  --tag-travel-bg: #e0f2fe;
+  --tag-travel-text: #0369a1;
+
+  --tag-books-bg: #dcfce7;
+  --tag-books-text: #15803d;
+
+  --tag-fun-bg: #fce7f3;
+  --tag-fun-text: #be185d;
+
+  --tag-other-bg: #f1f5f9;
+  --tag-other-text: #475569;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px;
+}
+
+/* ==========================================================================
+   2. MAIN CONTAINER (CENTERED CARD DESIGN)
+   ========================================================================== */
+.app-container {
+  width: 100%;
+  max-width: 480px; /* Perfect width for both mobile and desktop cards */
+  background: var(--bg-card);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   3. COLOURED HEADER
+   ========================================================================== */
+.app-header {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff;
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.app-header p {
+  font-size: 0.875rem;
+  opacity: 0.85;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   4. SUMMARY SECTION (BIG BOLD TOTAL)
+   ========================================================================== */
+.summary-card {
+  text-align: center;
+  padding: 20px;
+  background-color: #fafafa;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-card h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.total-display {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   5. FORM & MODERN INPUTS
+   ========================================================================== */
+.form-card, 
+.list-card {
+  padding: 20px 24px;
+}
+
+.form-card h2, 
+.list-card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text-main);
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+input, 
+select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem; /* 16px prevents automatic zoom on mobile iOS */
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input:focus, 
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Add Expense Button */
+#add-btn {
+  width: 100%;
+  padding: 13px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 6px;
+}
+
+#add-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+#add-btn:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   6. EXPENSE LIST & ITEMS
+   ========================================================================== */
+.list-card {
+  border-top: 1px solid var(--border-color);
+}
+
+#expense-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual list row created by JavaScript */
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: transform 0.15s ease;
+}
+
+.expense-item:hover {
+  transform: translateY(-1px);
+}
+
+/* Left part: Title & Date */
+.expense-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.expense-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.expense-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Right part: Amount & Delete Button */
+.expense-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.expense-cost {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: var(--danger);
+}
+
+/* ==========================================================================
+   7. CATEGORY TAGS (PILL BADGES)
+   ========================================================================== */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tag-food {
+  background-color: var(--tag-food-bg);
+  color: var(--tag-food-text);
+}
+
+.tag-travel {
+  background-color: var(--tag-travel-bg);
+  color: var(--tag-travel-text);
+}
+
+.tag-books {
+  background-color: var(--tag-books-bg);
+  color: var(--tag-books-text);
+}
+
+.tag-fun {
+  background-color: var(--tag-fun-bg);
+  color: var(--tag-fun-text);
+}
+
+.tag-other {
+  background-color: var(--tag-other-bg);
+  color: var(--tag-other-text);
+}
+
+/* Empty state message when list is empty */
+.empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 16px 0;
+}
+
+/* ==========================================================================
+   8. MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+    background-color: var(--bg-card);
+  }
+
+  .app-container {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .app-header {
+    padding: 24px 20px;
+  }
+
+  .form-card, 
+  .list-card {
+    padding: 18px 20px;
+  }
+}
