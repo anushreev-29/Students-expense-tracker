@@ -9,12 +9,17 @@ const expenseDateInput = document.getElementById('expense-date');
 const expenseList = document.getElementById('expense-list');
 const totalAmountDisplay = document.getElementById('total-amount');
 
-// Array to store all expense items
-let expenses = [];
+// Load saved expenses from localStorage (or start with an empty array if none exist)
+let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
 // =============================================================================
 // 2. HELPER FUNCTIONS
 // =============================================================================
+
+// Save the current expenses array to localStorage
+function saveExpensesToLocalStorage() {
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+}
 
 // Function to calculate and update the total spent
 function updateTotal() {
@@ -70,6 +75,9 @@ function deleteExpense(id) {
   // Keep only the expenses whose id does NOT match the clicked one
   expenses = expenses.filter((item) => item.id !== id);
 
+  // Save the updated list to localStorage
+  saveExpensesToLocalStorage();
+
   // Re-draw the list and recalculate the total
   renderExpenses();
   updateTotal();
@@ -112,6 +120,9 @@ expenseForm.addEventListener('submit', function (event) {
   // Add the new object to the expenses array
   expenses.push(newExpense);
 
+  // Save changes to localStorage
+  saveExpensesToLocalStorage();
+
   // Update the screen and total sum
   renderExpenses();
   updateTotal();
@@ -120,5 +131,6 @@ expenseForm.addEventListener('submit', function (event) {
   expenseForm.reset();
 });
 
-// Run render once at startup to display the initial empty message
+// Run once when the page loads to display saved expenses and calculate total
 renderExpenses();
+updateTotal();
