@@ -320,3 +320,39 @@ select:focus {
     padding: 18px 20px;
   }
 }
+/* ==========================================================================
+   CATEGORY BREAKDOWN & FILTER STYLING
+   ========================================================================== */
+.category-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.category-breakdown .tag {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.list-header h2 {
+  margin-bottom: 0;
+}
+
+/* Compact modern filter dropdown */
+.filter-select {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+}
