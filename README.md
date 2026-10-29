@@ -18,9 +18,3 @@ A clean, responsive, and beginner-friendly expense tracker built with pure HTML,
 - **HTML5:** Semantic layout and accessible form controls.
 - **CSS3:** Custom styles, CSS variables, Flexbox, and responsive media queries.
 - **JavaScript (ES6):** DOM manipulation, array methods (`filter`, `reduce`), and Web Storage API (`localStorage`).
-
-## 💻 How to Run Locally
-
-1. Clone or download this repository:
-   ```bash
-   git clone https://github.com/<your-username>/student-expense-tracker.git
